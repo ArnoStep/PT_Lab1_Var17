@@ -6,26 +6,31 @@
 #include "SubStringLib.h"
 
 const char* strcon(const char* str1, const char* str2) {
-    const char* p1 = str1, * p2 = str2, * iterator = nullptr;
-    unsigned int s1 = strlen(str1), s2 = strlen(str2), s3;
-    while (!iterator) {
-        if (p1 == str1 + s1) {
-            return iterator;
-        }
-        else if (*p1 == *p2) {
-            iterator = p1;
-            for (s3 = 0; s3 < s2; ++s3) {
-                if (*p1 == *p2) {
-                    ++p1, ++p2;
-                    continue;
-                }
-                else break;
-            }
-        }
-        else p1++;
-    }
-    char* substr = new char[s3 + 1];
-    strncpy(substr, iterator, s3);
-    substr[s3] = '\0';
-    return const_cast <const char*> (substr);
+	int max_len = 0;
+	int len = 0;
+	const char* left = str1;
+	const char* p1 = str1;
+	while (*p1 != '\0') {
+		const char* p2 = str2;
+		while (*p2 != '\0') {
+			const char* t1 = p1;
+			const char* t2 = p2;
+			len = 0;
+			while (*t1 != '\0' && *t2 != '\0' && *t1 == *t2) {
+				t1++;
+				t2++;
+				len += 1;
+			}
+			if (len > max_len) {
+				max_len = len;
+				left = p1;
+			}
+			p2++;
+		}
+		p1++;
+	}
+	char* ans = (char*)malloc((len + 1) * sizeof(char));
+	memcpy(ans, left, max_len);
+	*(ans + max_len) = '\0';
+	return ans;
 }
